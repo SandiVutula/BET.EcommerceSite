@@ -7,12 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MailKit" Version="3.4.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\BET.Data\BET.Data.csproj" />
-    <ProjectReference Include="..\BET.Shared\BET.Shared.csproj" />
+    <Folder Include="Configurations\" />
   </ItemGroup>
 
 </Project>

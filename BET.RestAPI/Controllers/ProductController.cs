@@ -1,5 +1,4 @@
-﻿using BET.Model.Dto;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BET.RestAPI.Controllers
@@ -8,7 +7,7 @@ namespace BET.RestAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
-        #region Endpoints
+        #region Constructor 
         [HttpGet]
         [Route("products")]
         public async Task<IActionResult> GetProducts()
@@ -23,7 +22,9 @@ namespace BET.RestAPI.Controllers
                 return BadRequest(ex.Message);
             }
         }
+        #endregion
 
+        #region Endpoints
         [HttpGet("{productId}")]
         public async Task<IActionResult> GetProductById(string productId)
         {

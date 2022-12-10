@@ -23,7 +23,11 @@
 
   <ItemGroup>
     <Folder Include="ApiControllers\" />
-    <Folder Include="Services\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BET.RestAPI\BET.RestAPI.csproj" />
+    <ProjectReference Include="..\BET.Service\BET.Service.csproj" />
   </ItemGroup>
 
 </Project>
