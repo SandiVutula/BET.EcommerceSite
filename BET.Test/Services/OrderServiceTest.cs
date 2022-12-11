@@ -8,12 +8,8 @@ using System.Threading.Tasks;
 
 namespace BET.Test.Services
 {
-    public class AccountServiceTest
+    public class OrderServiceTest
     {
-        private IAccountService _iAccountService;
-        public AccountServiceTest() 
-        {
-          //  _iAccountService = new AccountService("");
-        } 
+       
     }
 }

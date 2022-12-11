@@ -1,4 +1,4 @@
-﻿using BET.Data.Model.Dto;
+﻿using BET.Data.Model;
 
 namespace BET.Service.Contract
 {

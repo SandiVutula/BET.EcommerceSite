@@ -1,4 +1,4 @@
-﻿namespace BET.Data.Model.Dto
+﻿namespace BET.Data.Model
 {
     public class CartItem
     {

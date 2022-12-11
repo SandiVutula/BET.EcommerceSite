@@ -1,5 +1,5 @@
 ﻿using BET.Data.GenericRepository;
-using BET.Data.Model.Dto;
+using BET.Data.Model;
 using BET.Service.Contract;
 
 namespace BET.Service.Service

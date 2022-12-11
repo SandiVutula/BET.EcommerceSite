@@ -1,5 +1,5 @@
 ﻿using BET.Data.GenericRepository;
-using BET.Data.Model.Dto;
+using BET.Data.Model;
 using BET.Service.Contract;
 
 namespace BET.Service.Service
@@ -20,7 +20,7 @@ namespace BET.Service.Service
         }
         public async Task<Product> GetProductAsync(int productId)
         {
-            var product = await _iRepository.GetOneAsync<Product>(p => p.ProductId== productId);
+            var product = await _iRepository.GetOneAsync<Product>(p => p.Id== productId);
             return product;
         }
     }

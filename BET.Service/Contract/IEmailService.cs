@@ -9,6 +9,6 @@ namespace BET.Service.Contract
 {
     public interface IEmailService
     {
-        void SendEmailMessage(Email email);
+        void SendEmailMessage(EmailDto email);
     }
 }

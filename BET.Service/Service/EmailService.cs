@@ -20,7 +20,7 @@ namespace BET.Service.Service
         {
             _config = config;
         }
-        public void SendEmailMessage(Email email)
+        public void SendEmailMessage(EmailDto email)
         {
             try
             {
