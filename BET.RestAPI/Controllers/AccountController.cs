@@ -96,7 +96,7 @@ namespace BET.RestAPI.Controllers
                 var userExist = await _userManager.FindByEmailAsync(user.EmailAddress);
                 if (userExist == null)
                 {
-                    return BadRequest(new AuthResult()
+                    return BadRequest(new AuthResult()  
                     {
                         Errors = new List<string>()
                         {

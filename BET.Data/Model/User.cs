@@ -12,10 +12,12 @@ namespace BET.Data.Model
         public string City { get; set; }
         public string State { get; set; }
         public ICollection<Order> Orders { get; set; }
+        public ICollection<CartItem> CartItems { get; set; }
 
         public User()
         {
             Orders = new Collection<Order>();
+            CartItems = new Collection<CartItem>();
         }
     }
 }
