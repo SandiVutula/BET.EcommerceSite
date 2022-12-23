@@ -18,10 +18,5 @@ namespace BET.Service.Service
             var products = await _iRepository.GetAllAsync<Product>();
             return products.ToList();
         }
-        public async Task<Product> GetProductAsync(int productId)
-        {
-            var product = await _iRepository.GetOneAsync<Product>(p => p.Id== productId);
-            return product;
-        }
     }
 }

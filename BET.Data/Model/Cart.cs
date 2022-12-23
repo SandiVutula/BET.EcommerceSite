@@ -1,8 +1,11 @@
-﻿namespace BET.Data.Model
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.ComponentModel.DataAnnotations.Schema;
+
+namespace BET.Data.Model
 {
-    public class CartItem
+    public class Cart
     {
-        public CartItem()
+        public Cart()
         {
             Product = new Product();
         }
@@ -10,7 +13,8 @@
         public int ProductId { get; set; }
         public int Quantity { get; set; }
         public int UserId { get; set; }
-        public int Total { get; set; }
+        [Column(TypeName = "decimal(18, 2)")]
+        public decimal Total { get; set; }
         public virtual Product Product { get; set; }
         public User User { get; set; }
     }

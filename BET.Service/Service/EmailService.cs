@@ -30,7 +30,7 @@ namespace BET.Service.Service
                 emailMessage.Subject = email.Subject;
                 emailMessage.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = email.Body
+                    Text = "Successfully Ordered\", \"Congratulations,\\n You have successfully made an order, expect a couple of days to be delivered!\\n \" +\r\n\"BET Team"
                 };
 
                 using var smtp = new SmtpClient();

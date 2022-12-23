@@ -4,7 +4,7 @@ namespace BET.Service.Contract
 {
     public interface ICartService
     {
-        Task<CartItem> AddToCartAsync(CartItem cartItem);
-        Task<IList<CartItem>> GetCartItemsAsync(int userId);
+        Task<Cart> AddToCartAsync(Cart cart);
+        Task<IList<Cart>> GetCartItemsAsync(int userId);
     }
 }

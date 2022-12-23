@@ -13,5 +13,6 @@ namespace BET.Data.Model
         public decimal TotalPrice { get; set; }
         public User User { get; set; }
         public int UserId { get; set; }
+        public int ProductId { get; set; }
     }
 }

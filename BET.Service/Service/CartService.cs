@@ -12,24 +12,24 @@ namespace BET.Service.Service
             _iRepository = iRepository;
         }
 
-        public async Task<CartItem> AddToCartAsync(CartItem cartItem)
+        public async Task<Cart> AddToCartAsync(Cart cart)
         {
-            IEnumerable<CartItem> basketItems = await _iRepository.GetAsync<CartItem>(b => b.UserId == cartItem.UserId);
+            IEnumerable<Cart> baskets = await _iRepository.GetAsync<Cart>(b => b.UserId == cart.UserId);
 
-            _iRepository.Create(cartItem);
+            _iRepository.Create(cart);
             await _iRepository.SaveAsync();
-            return cartItem;
+            return cart;
         }
 
-        public async Task<IList<CartItem>> GetCartItemsAsync(int userId)
+        public async Task<IList<Cart>> GetCartItemsAsync(int userId)
         {
-            var cartItems = await _iRepository.GetAsync<CartItem>(b => b.UserId == userId);
+            var cartItems = await _iRepository.GetAsync<Cart>(b => b.UserId == userId);
             cartItems = PopulateProductIntoCartItem(cartItems.ToList());
             return cartItems.ToList();
         }
 
         #region Private Methods
-        private List<CartItem> PopulateProductIntoCartItem(List<CartItem> cartItems)
+        private List<Cart> PopulateProductIntoCartItem(List<Cart> cartItems)
         {
             foreach (var cartItem in cartItems)
             {

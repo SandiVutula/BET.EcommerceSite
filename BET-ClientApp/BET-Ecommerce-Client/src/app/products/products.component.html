@@ -1,1 +1,37 @@
-<p>products works!</p>
+<div class="navbar navbar-white">
+        <img src="../../../assets/Bet1.jfif" alt="BET Logo">
+        <button routerLink="/cart" class="btn btn-primary" style="margin-right: 50px; background-color:#203f6e;">
+            <i style="font-size: 30px;" class="fas fa-cart-plus"></i>
+            <div style="font-size: 10px;" class="badge bg-danger">{{totalItem}}</div>
+        </button>
+ </div>
+ <div class="card-top container-fluid">
+    <div class="container d-flex">
+        <div class="item">
+            <a>
+                <strong style="font-size: 18px;">All products</strong>
+            </a>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">  
+        <ng-container *ngFor="let item of filterProducts | paginate: {id: 'listing_pagination', 
+                            itemsPerPage: 6, 
+                            currentPage: page,
+                            totalItems: totalItem}">
+            <div class="card col-md-3">
+                <img src="{{item.image}}" alt="">
+                <h5 style="white-space: nowrap;overflow: hidden;text-overflow: ellipsis;max-width: 100ch;">{{item.name}}</h5>
+                <p><strong>Price:</strong> R{{item.price}}</p>
+                <p><strong>Quantity:</strong>{{item.quantity}}</p>
+                <button style="background-color:#203f6e;" class="btn btn-primary" (click)=addtocart(item)>Add to cart</button>
+            </div>
+            
+        </ng-container>
+        <div>
+            <pagination-controls id="listing_pagination" (pageChange)="page = $event"></pagination-controls>
+        </div>
+    </div>
+</div>
+

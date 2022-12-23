@@ -2,6 +2,8 @@ global using BET.Data.EcommerceDbContext;
 global using BET.Service.Contract;
 global using BET.Service.Service;
 global using Microsoft.EntityFrameworkCore;
+using BET.Data.GenericRepository;
+using BET.Data.GenericRepository.Implementation;
 using BET.Data.Model;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -64,9 +66,11 @@ builder.Services.AddCors(options => options.AddPolicy("ApiCorsPolicy", builder =
     builder.WithOrigins("http://localhost:4200/").AllowAnyMethod().AllowAnyHeader();
 }));
 //Registering services
-//builder.Services.AddSingleton<IProductService, ProductService>();
+builder.Services.AddTransient<IRepository, EntityFrameworkRepository>();
+builder.Services.AddTransient<IRepositoryReadOnly, EntityFrameworkRepositoryReadOnly>();
+builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-
+builder.Services.AddScoped<ICartService, CartService>();
 
 var app = builder.Build();
 

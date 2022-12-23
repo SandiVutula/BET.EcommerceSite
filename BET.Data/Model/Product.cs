@@ -6,8 +6,8 @@ namespace BET.Data.Model
 {
     public class Product
     {
-        public int Id { get; set; }
-        public string ImageUrl { get; set; }
+        public int ProductId { get; set; }
+        public string Image { get; set; }
         public string Name { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
         public decimal Price { get; set; }

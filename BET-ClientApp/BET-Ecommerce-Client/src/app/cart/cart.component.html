@@ -1,0 +1,53 @@
+<img src="../../../assets/Bet1.jfif" alt="BET Logo">
+<ng-container *ngIf="products.length !=0">
+    <div class="container">
+        <div class="card-table">
+            <div class="cart-product">
+                <table class="table table-responsive">
+                    <thead>
+                        <tr>
+                            <th>Product.No</th>
+                            <th>Product Name</th>
+                            <th>Product Image</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of products; let i = index">
+                            <td>PRODXYZ{{i+1}}</td>
+                            <td>{{item.name}}</td>
+                            <td><img style="width: 120px;" src="{{item.image}}" alt=""></td>
+                            <th style="width: 12%;">{{item.price}}</th>
+                            <th style="width: 12%;">{{item.quantity}}</th>
+                            <td>
+                                <button (click)="removeItem(item)" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4"></td>
+                            <td><button routerLink="/products" class="btn btn-primary">Continue Shopping</button></td>
+                            <td><button class="btn btn-success">Checkout</button></td>
+                            <td><strong>Total : R{{total}}</strong></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="products.length==0">
+    <div class="container">
+        <div class="card">
+            <h5 class="card-title">Shopping Cart</h5>
+        </div>
+        <div class="center">
+            <i class="far fa-shopping-cart"></i>
+            <img style="width: 200px;" src="../../../assets/CartEmpty.png"  alt="">
+            <h4>Your shopping cart is empty</h4>
+            <button routerLink="/products" class="btn btn-primary">Continue Shopping</button>
+        </div>
+    </div>    
+</ng-container>

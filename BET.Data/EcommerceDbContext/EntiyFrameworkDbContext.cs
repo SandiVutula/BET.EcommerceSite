@@ -15,8 +15,7 @@ namespace BET.Data.EcommerceDbContext
         public virtual DbSet<User> Users { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Order> Orders { get; set; }
-        public virtual DbSet<CartItem> CartItems { get; set; }
-        public virtual DbSet<Photo> Photos { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
 
     }
 }

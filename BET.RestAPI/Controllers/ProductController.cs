@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BET.RestAPI.Controllers
@@ -7,31 +9,25 @@ namespace BET.RestAPI.Controllers
     [ApiController]
     public class ProductController : ControllerBase
     {
+        private readonly IProductService _productService;
+
         #region Constructor 
+        public ProductController(IProductService productService)
+        {
+            _productService = productService;
+        }
+        #endregion
+
+        #region Endpoints
         [HttpGet]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Route("products")]
         public async Task<IActionResult> GetProducts()
         {
             try
             {
-                //TODO: Still needs implementation
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-        #endregion
-
-        #region Endpoints
-        [HttpGet("{productId}")]
-        public async Task<IActionResult> GetProductById(string productId)
-        {
-            try
-            {
-                //TODO: Still needs implementation
-                return Ok();
+                var result = await _productService.GetAllProductsAsync();
+                return Ok(result);
             }
             catch (Exception ex)
             {

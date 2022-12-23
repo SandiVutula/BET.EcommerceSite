@@ -1,23 +1,37 @@
-import { Component } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import {FormGroup, FormControl, Validators} from "@angular/forms";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
-export class RegisterComponent {
-  showPassword : boolean = false;
-  showConfirmPassword : boolean = false;
+export class RegisterComponent implements OnInit{
+  public registerForm : FormGroup = new FormGroup({
+    EmailAddress:new FormControl('', [Validators.required, Validators.email]),
+    Password:new FormControl('', [Validators.required, Validators.minLength(6)]),
+    ConfirmPassword:new FormControl('', [Validators.required, Validators.minLength(6)])
+  });
 
-  handlePasswordVisibility(){
-    this.showPassword = !this.showPassword;
+  constructor(private httpClient: HttpClient, private router: Router){}
+
+  ngOnInit(): void {
   }
 
-  handleConfirmPasswordVisibility(){
-    this.showConfirmPassword = !this.showConfirmPassword;
+  validateInput(input:any){
+      return !this.registerForm.get(input)?.valid &&
+              this.registerForm.get(input)?.touched;
   }
-
-  /*redirectToLogin(){
-    this.router.navigateByUrl('login')
-  }*/
+  registerUser(){
+    this.httpClient.post<any>("https://localhost:7046/api/Account/register", this.registerForm.value)
+    .subscribe(res=>{
+      alert("Sign up successful!");
+      this.registerForm.reset();
+      this.router.navigate(['login']);
+    }, err=>{
+      console.log("Something went wrong!")
+    })
+  }
 }

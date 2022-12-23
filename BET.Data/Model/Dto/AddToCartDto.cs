@@ -7,16 +7,15 @@ using System.Threading.Tasks;
 
 namespace BET.Data.Model.Dto
 {
-    public class AddToCartItemDto
+    public class AddToCartDto
     {
         public int Id { get; set; }
+        public int UserId { get; set; }
         public int ProductId { get; set; }
-        [Required()]
         public string ProductName{ get; set; }
+        public int Quantity { get; set; }
+        public int Total { get; set; }
 
-        [Required]
-        [Range(1, 5, ErrorMessage = "Maximum allowed Quantity 5")]
-        public int Quantity { get; set; } 
     }
 }
 
