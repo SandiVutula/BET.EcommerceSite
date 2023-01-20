@@ -21,32 +21,23 @@ namespace BET.RestAPI.Controllers
         #region Endpoints
         [HttpPost]
         [Route("addtocart")]
-        public async Task<IActionResult> AddToCart([FromBody] Cart cart)
+        public Task<IActionResult> AddToCart([FromBody] Cart cart)
         {
             try
             {
                 if(cart == null) 
                 {
-                    return BadRequest();
+                    return Task.FromResult<IActionResult>(new NotFoundResult());
                 }
                 else
                 {
-                    var result = await _cartService.AddToCartAsync(cart);
-                    var response = new Cart
-                    {
-                        Id = result.Id,
-                        ProductId= result.ProductId,
-                        Quantity = result.Quantity,
-                        Total= result.Total,
-                    };
-
-                    return Ok(response);
+                    _cartService.AddToCartAsync(cart);
+                    return Task.FromResult<IActionResult>(new OkResult());
                 }
-             
             }
             catch (Exception ex)
             {
-                return BadRequest(ex.Message);
+               return Task.FromResult<IActionResult>(new BadRequestResult());
             }
         }
 
@@ -56,7 +47,7 @@ namespace BET.RestAPI.Controllers
         {
             try
             {
-                if (userId != null)
+                if (userId != 0)
                 {
                     var result = await _cartService.GetCartItemsAsync(userId);
                     return Ok(result);
@@ -71,6 +62,25 @@ namespace BET.RestAPI.Controllers
             {
                 return BadRequest(ex.Message);
             }
+        }
+
+        [HttpDelete]
+        [Route("removeCartItem/{itemId}")]
+        public async Task<IActionResult> RemoveItemFromCart(int itemId)
+        {
+            try
+            {
+                if (itemId != 0)
+                {
+                   await _cartService.RemoveCartItem(itemId);
+                }
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+
+            return Ok("Item has been successfully removed");
         }
 
         #endregion

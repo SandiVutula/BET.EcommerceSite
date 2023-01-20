@@ -40,8 +40,9 @@ builder.Services.AddAuthentication(options =>
             IssuerSigningKey = new SymmetricSecurityKey(key),
             ValidateIssuer = false,
             ValidateAudience = false,
-            RequireExpirationTime= false, //TODO: Update this when refresh token is added
-            ValidateLifetime= true
+            RequireExpirationTime= true,
+            ValidateLifetime= true,
+            ClockSkew = TimeSpan.Zero
         };
     });
 
@@ -70,7 +71,8 @@ builder.Services.AddTransient<IRepository, EntityFrameworkRepository>();
 builder.Services.AddTransient<IRepositoryReadOnly, EntityFrameworkRepositoryReadOnly>();
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IEmailService, EmailService>();
-builder.Services.AddScoped<ICartService, CartService>();
+builder.Services.AddScoped<ICartService, CartService>(); 
+builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
 var app = builder.Build();
 

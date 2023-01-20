@@ -37,6 +37,17 @@ export class ProductsComponent  implements OnInit {
     this.cartService.addToCart(item);
   }
 
+  incrementQuantity(item: any) {
+      item.quantity++;
+  }
+
+  decrementQuantity(item: any) {
+    if (item.quantity > 0) {
+        item.quantity--;
+    } else {
+        item.quantity = 0;
+    }
+}
   filter(product:string){
     this.filterProducts = this.productList
     .filter((a:any)=>{

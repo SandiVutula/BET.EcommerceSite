@@ -1,4 +1,4 @@
-﻿using BET.Data.Model.Dto;
+﻿using BET.Data.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace BET.Service.Contract
 {
-    public interface IEmailService
+    public interface IOrderService
     {
-        void SendEmailMessage(string email, string subject, string emailBody);
+        void SaveOrder(Order order);
     }
 }

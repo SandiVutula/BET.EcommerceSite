@@ -11,17 +11,26 @@ namespace BET.Data.GenericRepository.Implementation
             _context = context;
         }
 
-        public virtual void Create<TEntity>(TEntity entity, string createdBy = null)
+        public virtual void Create<TEntity>(TEntity entity)
          where TEntity : class
         {
-            _context.Set<TEntity>().Add(entity);
+            if (_context.Entry(entity).State == EntityState.Detached)
+                _context.Set<TEntity>().Add(entity);
         }
 
         public virtual void Update<TEntity>(TEntity entity, string modifiedBy = null)
             where TEntity : class
         {
-            _context.Set<TEntity>().Attach(entity);
+            if (_context.ChangeTracker.HasChanges())
+                _context.Set<TEntity>().Attach(entity);
             _context.Entry(entity).State = EntityState.Modified;
+        }
+        public virtual  void Remove<TEntity>(TEntity entity, string modifiedBy = null)
+        where TEntity : class
+        {
+            if (_context.Entry(entity).State == EntityState.Detached)
+                _context.Set<TEntity>().Attach(entity);
+            _context.Set<TEntity>().Remove(entity);
         }
 
         public virtual void Save()

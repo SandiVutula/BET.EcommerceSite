@@ -20,17 +20,17 @@ namespace BET.Service.Service
         {
             _config = config;
         }
-        public void SendEmailMessage(EmailDto email)
+        public void SendEmailMessage(string email, string subject, string emailBody)
         {
             try
             {
                 var emailMessage = new MimeMessage();
                 emailMessage.From.Add(MailboxAddress.Parse(_config.GetSection("EmailUsername").Value));
-                emailMessage.To.Add(MailboxAddress.Parse(email.To));
-                emailMessage.Subject = email.Subject;
+                emailMessage.To.Add(MailboxAddress.Parse(email));
+                emailMessage.Subject = subject;
                 emailMessage.Body = new TextPart(TextFormat.Html)
                 {
-                    Text = "Successfully Ordered\", \"Congratulations,\\n You have successfully made an order, expect a couple of days to be delivered!\\n \" +\r\n\"BET Team"
+                    Text = emailBody
                 };
 
                 using var smtp = new SmtpClient();

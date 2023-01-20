@@ -30,6 +30,9 @@ namespace BET.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("OrderId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
@@ -44,9 +47,7 @@ namespace BET.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("Carts");
                 });
@@ -59,17 +60,10 @@ namespace BET.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Items")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("OrderNumber")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
@@ -110,6 +104,24 @@ namespace BET.Data.Migrations
                     b.HasKey("ProductId");
 
                     b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("BET.Data.Model.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("BET.Data.Model.User", b =>
@@ -391,32 +403,18 @@ namespace BET.Data.Migrations
 
             modelBuilder.Entity("BET.Data.Model.Cart", b =>
                 {
-                    b.HasOne("BET.Data.Model.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("BET.Data.Model.User", "User")
+                    b.HasOne("BET.Data.Model.Order", null)
                         .WithMany("CartItems")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-
-                    b.Navigation("User");
+                        .HasForeignKey("OrderId");
                 });
 
             modelBuilder.Entity("BET.Data.Model.Order", b =>
                 {
-                    b.HasOne("BET.Data.Model.User", "User")
+                    b.HasOne("BET.Data.Model.User", null)
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -470,10 +468,13 @@ namespace BET.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BET.Data.Model.User", b =>
+            modelBuilder.Entity("BET.Data.Model.Order", b =>
                 {
                     b.Navigation("CartItems");
+                });
 
+            modelBuilder.Entity("BET.Data.Model.User", b =>
+                {
                     b.Navigation("Orders");
                 });
 #pragma warning restore 612, 618

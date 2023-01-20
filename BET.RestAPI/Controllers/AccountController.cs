@@ -4,6 +4,7 @@ using BET.Data.Model.Dto;
 using BET.Service.Contract;
 using BET.Service.Service;
 using BET.Shared.Tools;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,13 @@ namespace BET.RestAPI.Controllers
     {
         private readonly UserManager<IdentityUser> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly IRefreshTokenService _refreshTokenService;
 
-        public AccountController(UserManager<IdentityUser> userManager, IConfiguration configuration)
+        public AccountController(UserManager<IdentityUser> userManager, IConfiguration configuration, IRefreshTokenService refreshTokenService)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _refreshTokenService = refreshTokenService;
         }
 
         #region Endpoints
@@ -137,13 +140,21 @@ namespace BET.RestAPI.Controllers
                 Result = false
             });
         }
-
+        [Authorize]
         [HttpPost]
         [Route("logout")]
         public async Task<IActionResult> Logout()
         {
-            //await _signInManager.SignOutAsync();
-            return Ok("You have been successfully logged out");
+            string id = HttpContext.User.FindFirstValue("id");
+
+            if (!Guid.TryParse(id, out Guid userId))
+            {
+                return Unauthorized();
+            }
+
+            await _refreshTokenService.DeleteAllTokens(userId);
+
+            return NoContent();
 
         }
         #endregion
@@ -171,8 +182,6 @@ namespace BET.RestAPI.Controllers
 
             var token = jwtTokenHandler.CreateToken(tokenDescriptor);
             return jwtTokenHandler.WriteToken(token);
-
-
         }
         #endregion
     }

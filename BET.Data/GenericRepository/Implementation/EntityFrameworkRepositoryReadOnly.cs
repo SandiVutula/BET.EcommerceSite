@@ -90,16 +90,10 @@ namespace BET.Data.GenericRepository.Implementation
             return await GetQueryable<TEntity>(filter, orderBy, includeProperties).FirstOrDefaultAsync();
         }
 
-        public virtual TEntity GetById<TEntity>(object id)
+        public virtual TEntity GetById<TEntity>(int id)
            where TEntity : class
         {
             return _contextReadOnly.Set<TEntity>().Find(id);
-        }
-
-        public virtual Task<int> GetCountAsync<TEntity>(Expression<Func<TEntity, bool>> filter = null)
-            where TEntity : class
-        {
-            return GetQueryable<TEntity>(filter).CountAsync();
         }
     }
 }

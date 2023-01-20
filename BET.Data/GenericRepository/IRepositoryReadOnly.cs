@@ -30,10 +30,9 @@ namespace BET.Data.GenericRepository
         string includeProperties = null)
             where TEntity : class;
 
-        TEntity GetById<TEntity>(object id)
-            where TEntity : class;
-
-        Task<int> GetCountAsync<TEntity>(Expression<Func<TEntity, bool>> filter = null)
+        //TEntity GetById<TEntity>(object id)
+        //    where TEntity : class;
+        TEntity GetById<TEntity>(int id)
             where TEntity : class;
     }
 }

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BET.Data.Migrations
 {
     [DbContext(typeof(EntiyFrameworkDbContext))]
-    [Migration("20221211215157_TableRelationships")]
-    partial class TableRelationships
+    [Migration("20230119102531_Re-evaluatedRelationships")]
+    partial class ReevaluatedRelationships
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace BET.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("BET.Data.Model.CartItem", b =>
+            modelBuilder.Entity("BET.Data.Model.Cart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -33,23 +33,28 @@ namespace BET.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("CartId")
+                        .HasColumnType("int");
+
                     b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("Total")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Total")
+                        .HasColumnType("decimal(18, 2)");
 
                     b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CartId");
+
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CartItems");
+                    b.ToTable("Carts");
                 });
 
             modelBuilder.Entity("BET.Data.Model.Order", b =>
@@ -60,14 +65,17 @@ namespace BET.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Items")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<DateTime>("OrderDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("OrderItem")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("OrderNumber")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProductId")
                         .HasColumnType("int");
 
                     b.Property<decimal>("TotalPrice")
@@ -83,39 +91,17 @@ namespace BET.Data.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("BET.Data.Model.Photo", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("PublicId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Url")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.ToTable("Photos");
-                });
-
             modelBuilder.Entity("BET.Data.Model.Product", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("ProductId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ProductId"));
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -127,7 +113,7 @@ namespace BET.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProductId");
 
                     b.ToTable("Products");
                 });
@@ -409,8 +395,12 @@ namespace BET.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("BET.Data.Model.CartItem", b =>
+            modelBuilder.Entity("BET.Data.Model.Cart", b =>
                 {
+                    b.HasOne("BET.Data.Model.Cart", null)
+                        .WithMany("CartItems")
+                        .HasForeignKey("CartId");
+
                     b.HasOne("BET.Data.Model.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
@@ -422,24 +412,11 @@ namespace BET.Data.Migrations
 
             modelBuilder.Entity("BET.Data.Model.Order", b =>
                 {
-                    b.HasOne("BET.Data.Model.User", "User")
+                    b.HasOne("BET.Data.Model.User", null)
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("BET.Data.Model.Photo", b =>
-                {
-                    b.HasOne("BET.Data.Model.Product", "Products")
-                        .WithMany("Photos")
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -493,9 +470,9 @@ namespace BET.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("BET.Data.Model.Product", b =>
+            modelBuilder.Entity("BET.Data.Model.Cart", b =>
                 {
-                    b.Navigation("Photos");
+                    b.Navigation("CartItems");
                 });
 
             modelBuilder.Entity("BET.Data.Model.User", b =>
